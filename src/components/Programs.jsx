@@ -1,99 +1,125 @@
-import { Wallet, Rocket, Planet, Star } from 'lucide-react';
+import React from 'react';
 import { motion } from 'framer-motion';
+import { Rocket, Wallet, Globe2, Star } from 'lucide-react';
 
 const programs = [
   {
-    title: 'Orbital Daytrip',
-    price: 899,
+    title: 'Orbital Hop',
+    desc: 'A two-orbit joyride above Earth with window-side views and microgravity playtime.',
+    price: 7500,
     icon: Rocket,
-    blurb: '90-minute ascent to LEO with panoramic cupola views and aurora flyby (conditions permitting).',
-    features: ['Window-side seat', 'Zero-G float session', 'Skyline photography kit', 'Reentry soft-landing tech'],
-    color: 'from-fuchsia-500 to-violet-500',
+    perks: ['2-3 hours total', 'Training included', 'View sunrise from space'],
   },
   {
-    title: 'Lunar Loop',
-    price: 2499,
-    icon: Planet,
-    blurb: 'Two-night cruise slingshotting around the Moon. Witness the Earthrise in high definition.',
-    features: ['Private berth', 'Holo-tour guide', 'Moon-orbit dinner', 'Radiation-shielded lounge'],
-    color: 'from-cyan-400 to-sky-500',
+    title: 'Lunar Flyby',
+    desc: 'Swing past the Moon on a glowing neon trajectory. No landing, all awe.',
+    price: 39900,
+    icon: Globe2,
+    perks: ['3-4 days', 'Deluxe cabin', 'Moonrise selfies'],
   },
   {
-    title: 'Asteroid Market Run',
-    price: 1499,
-    icon: Wallet,
-    blurb: 'Trade-post hop across the belt with artisan meteorite crafts and gravity-well cafés.',
-    features: ['Cargo allowance', 'Merchant access pass', 'Grav-scooter rental', 'Comet-tail parade (seasonal)'],
-    color: 'from-emerald-400 to-teal-500',
-  },
-  {
-    title: 'Starlight Sleeper',
-    price: 3299,
+    title: 'Station Weekend',
+    desc: 'Dock at a private station for a weekend in orbit with cosmic cuisine and games.',
+    price: 58900,
     icon: Star,
-    blurb: 'Overnight deep-sky voyage through neon starlanes with cabin stasis-comfort.',
-    features: ['Private cabin', 'Nebula dining car', 'AI concierge', 'Celestial cinema dome'],
-    color: 'from-amber-400 to-rose-500',
+    perks: ['2 nights in orbit', 'VR stargazing', 'Zero-G arcade'],
   },
 ];
 
 export default function Programs() {
   return (
-    <section id="programs" className="relative py-24">
-      <div className="absolute inset-0 -z-10 opacity-[0.15] bg-[radial-gradient(800px_400px_at_20%_20%,#a855f7,transparent_60%),radial-gradient(600px_300px_at_80%_50%,#22d3ee,transparent_60%)]" />
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="max-w-2xl">
-          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">Choose your trajectory</h2>
-          <p className="mt-3 text-white/70">Transparent pricing, stellar service. All fares include taxes, insurance, and carbon offsets.</p>
+    <section id="programs" className="relative py-24 sm:py-28">
+      <BackgroundFX />
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="max-w-3xl">
+          <h2 className="text-3xl sm:text-5xl font-extrabold leading-tight">
+            <span className="bg-gradient-to-r from-cyan-200 via-fuchsia-300 to-violet-200 bg-clip-text text-transparent">
+              Reasonably Priced Voyages
+            </span>
+          </h2>
+          <p className="mt-4 text-white/80 max-w-2xl">
+            Pick your path along our liquid-gradient lanes. All packages include safety training, suits, snacks, and stellar vibes.
+          </p>
         </div>
 
-        <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {programs.map((p, idx) => (
-            <ProgramCard key={p.title} {...p} delay={idx * 0.05} />
-          ))}
+        <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
+          {programs.map((p, i) => (
+            <ProgramCard key={p.title} p={p} i={i} />)
+          )}
         </div>
 
-        <div id="pricing" className="mt-14 flex flex-wrap items-center gap-4">
-          <a href="#book" className="px-6 py-3 rounded-full bg-gradient-to-r from-fuchsia-600 to-violet-600 hover:from-fuchsia-500 hover:to-violet-500 transition shadow-[0_0_30px_rgba(168,85,247,0.35)]">Reserve your seat</a>
-          <p className="text-white/60 text-sm">Flexible payment plans available. Student and educator discounts on request.</p>
+        <div id="pricing" className="mt-14 flex flex-col md:flex-row items-center gap-3">
+          <div className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3 py-1.5 text-sm text-white/80">
+            <Wallet className="h-4 w-4 text-cyan-300" />
+            Transparent pricing. No billionaire tax.
+          </div>
+          <a href="#contact" className="md:ml-auto px-5 py-2.5 rounded-full bg-gradient-to-r from-cyan-400 via-fuchsia-500 to-violet-500 text-black font-semibold hover:brightness-110 transition">
+            Talk to Flight Advisor
+          </a>
         </div>
       </div>
     </section>
   );
 }
 
-function ProgramCard({ title, price, icon: Icon, blurb, features, color, delay }) {
+function ProgramCard({ p, i }) {
+  const Icon = p.icon;
   return (
-    <motion.article
-      initial={{ opacity: 0, y: 16 }}
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-80px' }}
-      transition={{ duration: 0.5, delay }}
-      className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md">
-      <div className={`absolute -inset-1 opacity-0 group-hover:opacity-100 transition duration-500 blur-2xl bg-gradient-to-tr ${color}`} />
-      <div className="relative p-6 flex flex-col h-full">
-        <div className="flex items-center gap-3">
-          <div className={`h-11 w-11 rounded-xl grid place-items-center bg-gradient-to-tr ${color} text-black/80 shadow-[0_0_30px_rgba(168,85,247,0.35)]`}>
-            <Icon className="h-6 w-6" />
+      viewport={{ once: true, margin: '-50px' }}
+      transition={{ duration: 0.5, delay: i * 0.08 }}
+      whileHover={{ y: -6 }}
+      className="relative rounded-2xl border border-white/10 bg-gradient-to-b from-white/10 to-white/5 p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] overflow-hidden"
+    >
+      <Glow />
+      <div className="flex items-start gap-4">
+        <div className="relative">
+          <div className="h-12 w-12 rounded-xl bg-black/60 border border-white/10 flex items-center justify-center">
+            <Icon className="h-6 w-6 text-cyan-300" />
           </div>
-          <h3 className="text-xl font-semibold">{title}</h3>
         </div>
-        <p className="mt-3 text-white/70 text-sm flex-1">{blurb}</p>
-        <ul className="mt-4 space-y-2 text-white/80 text-sm">
-          {features.map((f) => (
-            <li key={f} className="flex items-center gap-2">
-              <span className="h-1.5 w-1.5 rounded-full bg-white/60" />
-              {f}
-            </li>
-          ))}
-        </ul>
-        <div className="mt-6 flex items-end justify-between">
-          <div>
-            <div className="text-2xl font-bold">${price.toLocaleString()}</div>
-            <div className="text-xs text-white/60">per traveler</div>
-          </div>
-          <a href="#book" className="px-4 py-2 rounded-full border border-white/15 bg-white/10 hover:bg-white/20 transition">Book</a>
+        <div className="flex-1">
+          <h3 className="text-xl font-bold tracking-tight">{p.title}</h3>
+          <p className="mt-1 text-sm text-white/80">{p.desc}</p>
         </div>
       </div>
-    </motion.article>
+      <div className="mt-6 flex items-center justify-between">
+        <div>
+          <div className="text-3xl font-extrabold">
+            <span className="bg-gradient-to-r from-cyan-200 to-fuchsia-300 bg-clip-text text-transparent">${p.price.toLocaleString()}</span>
+          </div>
+          <div className="text-xs uppercase tracking-wide text-white/60">per traveler</div>
+        </div>
+        <a href="#contact" className="px-4 py-2 rounded-full bg-white text-black font-semibold hover:bg-white/90 transition">Select</a>
+      </div>
+      <ul className="mt-4 space-y-1.5 text-sm text-white/80">
+        {p.perks.map(perk => (
+          <li key={perk} className="flex items-center gap-2">
+            <span className="h-1.5 w-1.5 rounded-full bg-gradient-to-r from-cyan-400 to-fuchsia-400" />
+            {perk}
+          </li>
+        ))}
+      </ul>
+    </motion.div>
+  );
+}
+
+function BackgroundFX() {
+  return (
+    <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
+      <div className="absolute -top-24 -left-24 h-[420px] w-[420px] rounded-full bg-fuchsia-500/20 blur-3xl" />
+      <div className="absolute -bottom-24 -right-24 h-[420px] w-[420px] rounded-full bg-cyan-500/20 blur-3xl" />
+      <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+    </div>
+  );
+}
+
+function Glow() {
+  return (
+    <div aria-hidden className="pointer-events-none absolute -inset-1 rounded-3xl opacity-0 hover:opacity-100 transition">
+      <div className="absolute -inset-1 rounded-3xl bg-gradient-to-r from-cyan-500/10 via-fuchsia-500/10 to-violet-500/10 blur-xl" />
+    </div>
   );
 }
